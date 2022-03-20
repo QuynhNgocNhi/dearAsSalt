@@ -1,0 +1,25 @@
+.sas__blankpaper{
+  background-image: url('../../images/blank-paper.png');
+  background-size: 100% 91%;
+  background-repeat: no-repeat;
+  width: 90%;
+  height: calc(100vh - 10px);
+  background-position: bottom;
+  padding: 1em;
+  padding-left: 3em;
+  padding-top: 5em;
+  margin: auto;
+  .blankpaper__header{
+    font-size: 1.35em;
+  }
+  .blankpaper__content{
+    overflow-y: scroll;
+    height: 100%;
+    
+  }
+  div, li{
+    color: #000;
+    font-size: 1.05em;
+    outline: none;
+  }
+}

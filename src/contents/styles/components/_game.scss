@@ -1,0 +1,178 @@
+.sas__game{
+  //height: 100vh;
+  overflow: hidden;
+  color: #fff;
+  img{
+    width: 100%;
+    height: 100%;
+  }
+  .hint-gr {
+    z-index: 999;
+    position: absolute;
+    margin-top: 90px;
+  }
+  .game__navbar{
+    background: url("../../images/game/progress-bar-bg.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+    .react-sweet-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0 1em;
+      .react-sweet-progress-symbol{
+        display: none;
+      }
+      .react-sweet-progress-line-inner{
+        background-color: transparent!important;
+      }
+      .react-sweet-progress-line-inner-status-active:before{
+        animation: none;
+      }
+      
+    }
+    .react-sweet-progress-line{
+      background-color: transparent!important;
+    }
+    // .react-sweet-progress-line-inner.react-sweet-progress-line-inner-status-active:after,
+    .react-sweet-progress-line-inner::after
+    {
+      background: url("../../images/sas-crown-icon.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      content: "";
+      width: 40px;
+      height: 50px;
+      z-index: 1000;
+      position: absolute;
+      right: -20px;
+      top: -20px;
+    }
+  }
+  .sas__gamewrapper{
+    .sas__gameitem{
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      .gameitem__dialog{
+        background-image: url('../../images/game/dialog-box.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 92%;
+        height: 155px;
+        top: 60px;
+        position: absolute;
+        right: 0;
+        left: 0;
+        margin: auto;
+        padding: 0.8em 0.5em;
+        font-size: 1.2em;
+      }
+      .gameitem__charactername{
+        position: absolute;
+        top: 180px;
+        font-size: 1.5em;
+        text-shadow: -3px 3px 1px #000000;
+        padding-left: 0.5em;
+        color: #fff;
+        font-size: 2.6em;
+        width: 50%;
+        line-height: 1;
+        font-family: 'enchanted-land';
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .gameitem__help{
+        position: absolute;
+        bottom: -93px;
+        height: 155px;
+        background-image: url('../../images/game/help-box.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 90%;
+        margin: auto;
+        right: 0;
+        padding: 0.6em;
+        font-size: 1.2em;
+        transition: 0.2s all;
+        &.height-translate{
+          transform: translateY(-78px);
+        }
+        img{
+          width: 100%;
+        }
+        .help__togglebtn{
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+        .help__joker {
+          img{
+            width: 50px;
+          }
+        }
+      }
+    }
+  }
+  .sas__gamesubmit{
+    background: url("../../images/characters/king.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    height: inherit;
+    width: 100%;
+    .gamesubmit__gameform{
+      position: absolute;
+      top: 50%; right: 50%;
+      transform: translate(50%,-50%);
+      background: url("../../images/game/game-submit-bg.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      width: 85%;
+      height: 37%;
+      margin: auto;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding-top: 1.5em;
+      .gameform__header{
+        font-size: 1.7em;
+        text-transform: uppercase;
+      }
+      .gameform__info, 
+      .gameform__score{
+        font-size: 1.5em;
+      }
+      .gameform__score{
+        color: #f5b717;
+        text-transform: capitalize;
+        margin-top: 1em;
+        margin-bottom: 10px;
+      }
+      #gameformEmail{
+        height: 40px;
+        padding-left: 0.5em;
+      }
+      .gameform__submitbtn{
+        font-family: 'enchanted-land';
+        text-transform: uppercase;
+        text-decoration: underline;
+        margin: 0.5em auto;
+        cursor: pointer;
+      }
+    }
+  }
+}

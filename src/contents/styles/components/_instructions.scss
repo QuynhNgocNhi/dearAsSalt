@@ -1,0 +1,50 @@
+.instructions{
+  padding: 2em;
+  padding-left: 1em;
+  padding-top: 4em;
+  padding-right: 0;
+  .sas__instructions{
+    img{
+      width: 100%;
+    }
+    .instructions__two{
+      width: 98%;
+    }
+  }
+}
+.slick-dots{
+  bottom: -10px!important;
+  li {
+    margin: 0 2px!important;
+  }
+}
+.slick-dots li button:before{
+  font-size: 12px!important;
+}
+.slick-dots li.slick-active button:before {
+  opacity: 1!important;
+  color: transparent;
+  background-color: #000;
+}
+.slick-dots li button:before {
+  font-family: 'slick';
+  font-size: 6px;
+  line-height: 10px!important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px!important;
+  height: 10px!important;
+  border-radius: 50%;
+  content: '';
+  color: transparent!important;
+  border: 1px solid #000;
+  text-align: center;
+  background: #ffeed7;
+  opacity: 1!important;
+}
+@media screen and (max-width: 767px){
+  .instructions{
+    padding-top: 4.4em;
+  }
+}

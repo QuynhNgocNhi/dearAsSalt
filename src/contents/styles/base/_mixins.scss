@@ -1,0 +1,44 @@
+@mixin styleText($color,$fs,$fw){
+    color:$color ;
+    font-size: $fs;
+    font-weight: $fw;
+}
+
+@mixin styleButton($bg-color,$border,$pd-y,$pd-x,$bd-radius) {
+    background-color:$bg-color ;
+    border: 1px solid $border;
+    padding:$pd-y $pd-x;
+    border-radius:$bd-radius;    
+}
+
+@mixin hoverButton($bg-hover,$bd-hover,$color-hover) {
+    background-color:$bg-hover ;
+    border-color:$bd-hover ;
+    color: $color-hover;
+}
+
+//responsive
+@mixin responsiveMin($screen) {
+  @if map-has-key($map: $breakpoints, $key: $screen) {
+    //576px
+    $value: map-get($map: $breakpoints, $key: $screen);
+    @media screen and (min-width: $value){
+      @content;
+    }
+  }
+  @else {
+    @warn "please re-enter";
+  }
+}
+@mixin responsiveMax($screen) {
+  @if map-has-key($map: $breakpoints, $key: $screen) {
+    //576px
+    $value: map-get($map: $breakpoints, $key: $screen);
+    @media screen and (max-width: $value){
+      @content;
+    }
+  }
+  @else {
+    @warn "please re-enter";
+  }
+}

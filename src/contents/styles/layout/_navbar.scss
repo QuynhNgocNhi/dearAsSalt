@@ -1,0 +1,31 @@
+.sas__navbar {
+  background: url("../../images/menu-background.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  .navbar__logoimg {
+    width: 40px;
+  }
+  .navbar__menu {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    a {
+      font-family: "enchanted-land", sans-serif;
+      color: #fff;
+      text-transform: uppercase;
+      &.active {
+        color: #f5b717;
+      }
+    }
+  }
+}

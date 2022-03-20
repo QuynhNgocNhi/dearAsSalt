@@ -1,0 +1,94 @@
+@font-face {
+    font-family: 'enchanted-land';
+    src: url('../../fonts/Enchanted-Land.woff') format('woff'),
+         url('../../fonts/Enchanted-Land.otf') format('truetype');
+}
+@font-face {
+  font-family: 'trattatello';
+  src: url('../../fonts/Trattatello.eot'); /* IE9 Compat Modes */
+  src: url('../../fonts/Trattatello.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/Trattatello.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../../fonts/Trattatello.ttf')  format('truetype'), /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'classique-saigon';
+  src: url('../../fonts/Classique-Saigon.woff') format('woff'),
+       url('../../fonts/Classique-Saigon.ttf') format('truetype');
+}
+* {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    line-height: 1.25em;
+}
+a {
+    text-decoration: none;
+}
+html, body{
+    font-family: 'trattatello', sans-serif;
+    @include styleText($color-black-0,$fs-0,$fw-normal);
+}
+html {
+  height: -webkit-fill-available;
+}
+body {
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
+  overflow: hidden;
+}
+.sas{
+  height: 100%;
+    .sas__container {
+        width: 100%;
+        max-width: 400px;
+        //padding-right: 15px;
+        //padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        position: relative;
+        //background: #fff;
+    }
+    .sas__background{
+        background: url("../../images/background.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+    }
+}
+.table-bordered th{
+  border-top: 2px solid #000000;
+}
+.table-bordered td{
+  border-top: 1px solid #000000;
+}
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a89f97;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #b7b0aa;
+}
+// @media screen and (max-width: 767px) {
+//   html { 
+//     overflow: hidden; 
+//     width: 100%; 
+//   } 
+//   body { 
+//     height:100%; 
+//     width: 105%; 
+//     position:fixed; /* prevent overscroll bounce*/ 
+//     overflow-y:scroll; 
+//     -webkit-overflow-scrolling: touch; /* iOS velocity scrolling */ }
+// }

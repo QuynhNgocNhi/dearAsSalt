@@ -1,0 +1,14 @@
+//base
+@import './base/variables';
+@import './base/mixins';
+//layout
+@import './layout/reset';
+@import './layout/navbar';
+//components
+@import './components/loading';
+@import './components/blank-paper';
+@import './components/home';
+@import './components/about';
+@import './components/instructions';
+@import './components/game';
+@import './components/score';

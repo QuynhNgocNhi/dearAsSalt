@@ -4,6 +4,7 @@ import LoadingScreen from "components/AppScreens/LoadingScreen";
 import jokerimg from "contents/images/game/joker.png";
 import jokerimgUp from "contents/images/game/joker-up.png";
 import { Progress } from "react-sweet-progress";
+
 import "react-sweet-progress/lib/style.css";
 export default class GameScreen extends Component {
   constructor(props) {
@@ -27,24 +28,45 @@ export default class GameScreen extends Component {
     };
   }
   async componentDidMount() {
-    const response = await fetch("question/get");
-    const data = await response.json();
-    if (data != null && data.characters != null) {
-      var length = data.characters.length;
-      var nextQuestion = length > 0 ? data.characters[0].question : null;
+
+    const response = await fetch("http://103.110.86.45:6868/api/questions");
+    const dataResponse = await response.json();
+    const data = dataResponse.data;
+
+    /*    code:
+       - input: array
+       - output: hien thi
+       
+       - input: array bi trung(ban dau)
+       - input: array khong bi trung (sau khi random) */
+
+    /*   const data = data1.reduce(function (r, a) {
+        r[a.characters_id] = r[a.characters_id] || [];
+        r[a.characters_id].push(a);
+        return r;
+      }, Object.create(null));*/
+    console.log(data);
+
+    if (data != null) {
+      var length = data.length;
+      console.log(length);
+
+
+
+      var nextQuestion = length > 0 ? data[0] : null;
       let _dialogText = "";
       let _questionText = "";
       let _infoText = "";
       if (nextQuestion != null) {
-        _dialogText = nextQuestion.description;
-        _questionText = nextQuestion.content;
+        _dialogText = nextQuestion.dialog_text;
+        _questionText = nextQuestion.question;
         _infoText = nextQuestion.info;
       }
       //console.log(data);
       this.setState({
-        maxPoint: data.qMaxPoint,
-        qLength: data.qLength,
-        gameSession: data.characters,
+        maxPoint: 10,
+        qLength: 30,
+        gameSession: data,
         answers: null,
         yourPoint: 0,
         dialogText: _dialogText,
@@ -65,22 +87,22 @@ export default class GameScreen extends Component {
       var name = this.state.userName;
       if (name != null && name != "") {
         var data = {
-          userFullName: name,
-          answers: this.state.answers,
+          user_name: name,
+          total_score: this.state.answers,
         };
-        await fetch("question/submit", {
+        await fetch("http://103.110.86.45:6868/api/scores", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
       }
       this.setState({ isLoading: false, submitting: false });
-      this.props.history.push("/score");
+      this.props.history.push("http://103.110.86.45:6868/api/scores");
     }
   };
   render() {
     const onSwipe = (direction, question, nextQuestion) => {
-      //console.log('You swiped: ' + direction);
+      console.log('You swiped: ' + direction);
       switch (direction) {
         case "right": {
           //yes
@@ -92,10 +114,10 @@ export default class GameScreen extends Component {
           onAnswer(false, question, nextQuestion);
           break;
         }
-        // case 'up': {
-        //   onShowExtendInfo(nextQuestion.info);
-        //   break;
-        // }
+        case 'up': {
+          onShowExtendInfo(nextQuestion.info);
+          break;
+        }
       }
     };
     const onAnswer = (selection, question, nextQuestion) => {
@@ -111,25 +133,26 @@ export default class GameScreen extends Component {
       }
       var myPoint = 0;
       var questions = this.state.gameSession;
-      //console.log("questions", questions)
+      console.log("questions", questions)
       _answers.map((answer, index) => {
         var index = questions.findIndex(
           (f) => f.question.id === answer.questionId
         );
         if (index >= 0) {
-          var qInfo = questions[index].question;
+          var qInfo = questions[index];
+          console.log(qInfo);
           myPoint +=
             qInfo.isCorrect == answer.selection
-              ? qInfo.point
-              : qInfo.inCorrectPoint;
+              ? qInfo.yes_score
+              : qInfo.no_score;
         }
       });
       let _dialogText = "";
       let _questionText = "";
       let _infoText = "";
       if (nextQuestion != null) {
-        _dialogText = nextQuestion.description;
-        _questionText = nextQuestion.content;
+        _dialogText = nextQuestion.dialog_text;
+        _questionText = nextQuestion.question;
         _infoText = nextQuestion.info;
       }
       let isFinish = _answers.length == this.state.qLength;
@@ -142,8 +165,8 @@ export default class GameScreen extends Component {
         isFinish: isFinish,
         isPaneOpenBottom: false,
       });
-      //console.log(this.state.answers);
-      //console.log('yourPoint', this.state.yourPoint);
+      console.log(this.state.answers);
+      console.log('yourPoint', this.state.yourPoint);
     };
     var currentPercent = (this.state.yourPoint * 100) / this.state.maxPoint;
     //console.log(currentPercent)
@@ -174,7 +197,6 @@ export default class GameScreen extends Component {
               <div className="sas__gamewrapper">
                 {this.state.gameSession != null ? (
                   this.state.gameSession.map((item, index) => {
-                    var _src = require(`contents/images/characters/${item.contentUrl}`);
                     var length = this.state.gameSession.length;
                     var nextQuestion =
                       index + 1 <= length - 1
@@ -188,9 +210,9 @@ export default class GameScreen extends Component {
                         }
                         preventSwipe={["up", "down"]}
                         className="sas__gameitem"
-                        //style={{height: window.innerWidth <= 767 ? `${window.innerHeight}px` : '100vh'}}
+                      //style={{height: window.innerWidth <= 767 ? `${window.innerHeight}px` : '100vh'}}
                       >
-                        <img src={_src} />
+
 
                         <div className="gameitem__dialog">
                           {this.state.dialogText}
@@ -199,11 +221,10 @@ export default class GameScreen extends Component {
                           {item.name}
                         </div>
                         <div
-                          className={`gameitem__help ${
-                            this.state.isPaneOpenBottom
-                              ? "height-translate"
-                              : ""
-                          }`}
+                          className={`gameitem__help ${this.state.isPaneOpenBottom
+                            ? "height-translate"
+                            : ""
+                            }`}
                         >
                           <div
                             onClick={() => this.onShowHelpText()}

@@ -12,16 +12,18 @@ export default class ScoreScreen extends Component {
   }
   componentDidMount() {
     this.fetchData();
+
   }
   static fetchData(data) {
+    console.log(data);
     return (
       <table className='table table-responsive' aria-labelledby="tabelLabel">
         <tbody>
           {data.map(item =>
             <tr key={item.id}>
               <td>{item.rank}</td>
-              <td>{item.name}</td>
-              <td>{Number(item.totalScore.toFixed(1))}</td>
+              <td>{item.user_name}</td>
+              <td>{Number(item.total_score.toFixed(1))}</td>
             </tr>
           )}
         </tbody>
@@ -29,10 +31,10 @@ export default class ScoreScreen extends Component {
     );
   }
   onClickShareBtn = () => {
-      this.props.history.push("/game");
+    this.props.history.push("/game");
   }
   onClickreplayBtn = () => {
-      this.props.history.push("/game");
+    this.props.history.push("/game");
   }
 
   render() {
@@ -42,43 +44,44 @@ export default class ScoreScreen extends Component {
 
     return (
       (this.state.loading) ? (
-        <LoadingScreen/>
+        <LoadingScreen />
       ) : (
-          <div className="sas__blankpaper" style={{height: window.innerHeight}}>
-            <div className="sas__score">
-              <div className="score__header">
-                <div className="score__headermain">top best kings</div>
-                <div className="score__headersub">of all times</div>
+        <div className="sas__blankpaper" style={{ height: window.innerHeight }}>
+          <div className="sas__score">
+            <div className="score__header">
+              <div className="score__headermain">top best kings</div>
+              <div className="score__headersub">of all times</div>
+            </div>
+            {contents}
+            <div className="score__actionbtngroup">
+              <div className="actionbtngroup__item">
+                <img src={shopbtn} />
+                <div>shop</div>
               </div>
-              {contents}
-              <div className="score__actionbtngroup">
-                <div className="actionbtngroup__item">
-                  <img src={shopbtn} />
-                  <div>shop</div>
-                </div>
-                <div className="actionbtngroup__item"  onClick={() => this.onClickreplayBtn()}>
-                  <img src={replaybtn} />
-                  <div>replay</div>
-                </div>
-                <div className="actionbtngroup__item" 
-                  //onClick={() => this.onClickShareBtn()}
-                >
-                  <img src={sharebtn} />
-                  <div>share </div>
-                </div>
+              <div className="actionbtngroup__item" onClick={() => this.onClickreplayBtn()}>
+                <img src={replaybtn} />
+                <div>replay</div>
+              </div>
+              <div className="actionbtngroup__item"
+              //onClick={() => this.onClickShareBtn()}
+              >
+                <img src={sharebtn} />
+                <div>share </div>
               </div>
             </div>
           </div>
+        </div>
 
-        )
+      )
 
     );
   }
 
   async fetchData() {
     try {
-      const response = await fetch('leaderBoard'); // gọi api lên controller để lấy data
-      const data = await response.json();
+      const response = await fetch('http://103.110.86.45:6868/api/scores'); // gọi api lên controller để lấy data
+      const dataResponse = await response.json();
+      let data = dataResponse.data;
       console.log(data);
       this.setState({ items: data, loading: false });
     }

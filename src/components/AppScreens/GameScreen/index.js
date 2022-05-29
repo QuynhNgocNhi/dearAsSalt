@@ -108,7 +108,7 @@ export default class GameScreen extends Component {
         });
       }
       this.setState({ isLoading: false, submitting: false });
-      this.props.history.push("http://103.110.86.45:6868/api/scores");
+      this.props.history.push("/score");
     }
   };
   render() {

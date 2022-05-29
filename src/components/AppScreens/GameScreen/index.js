@@ -31,8 +31,8 @@ export default class GameScreen extends Component {
 
     const response = await fetch("http://103.110.86.45:6868/api/questions");
     const dataResponse = await response.json();
-    const data1 = dataResponse.data;
-
+    let data1 = dataResponse.data;
+    console.log(data1);
     /*    code:
        - input: array
        - output: hien thi
@@ -40,16 +40,16 @@ export default class GameScreen extends Component {
        - input: array bi trung(ban dau)
        - input: array khong bi trung (sau khi random) */
 
-    const group = data1.reduce(function (r, a) {
+    let group = data1.reduce(function (r, a) {
       r[a.characters_id] = r[a.characters_id] || [];
       r[a.characters_id].push(a);
       return r;
     }, Object.create(null));
-    const data = [];
-    for (const character_id in group) {
-      random_index_in_a_group =
-        Math.floor(Math.random() * group.ford.length);
-      a_random_item = group[character_id][random_index_in_a_group];
+    let data = [];
+    for (let character_id in group) {
+      let random_index_in_a_group =
+        Math.floor(Math.random() * group[character_id].length);
+      let a_random_item = group[character_id][random_index_in_a_group];
       data.push(a_random_item);
     }
     console.log(data);
@@ -57,7 +57,11 @@ export default class GameScreen extends Component {
     if (data != null) {
       var length = data.length;
       console.log(length);
-
+      let hi = 0;
+      for (let index in data) {
+        let yes = data[index].yes_score;
+        hi += yes;
+      }
 
 
       var nextQuestion = length > 0 ? data[0] : null;
@@ -71,8 +75,8 @@ export default class GameScreen extends Component {
       }
       //console.log(data);
       this.setState({
-        maxPoint: 10,
-        qLength: 30,
+        maxPoint: hi,
+        qLength: length,
         gameSession: data,
         answers: null,
         yourPoint: 0,
@@ -130,7 +134,7 @@ export default class GameScreen extends Component {
     const onAnswer = (selection, question, nextQuestion) => {
       var _answers = this.state.answers != null ? this.state.answers : [];
       var existIndex = _answers.findIndex((f) => f.questionId === question.id);
-      if (existIndex >= 0) {
+      if (false) {
         _answers[existIndex].selection = selection;
       } else {
         _answers.push({
@@ -147,9 +151,9 @@ export default class GameScreen extends Component {
         );
         if (index >= 0) {
           var qInfo = questions[index];
-          console.log(qInfo);
+
           myPoint +=
-            qInfo.isCorrect == answer.selection
+            answer.selection == true
               ? qInfo.yes_score
               : qInfo.no_score;
         }
@@ -157,12 +161,15 @@ export default class GameScreen extends Component {
       let _dialogText = "";
       let _questionText = "";
       let _infoText = "";
+      console.log(nextQuestion != null);
       if (nextQuestion != null) {
         _dialogText = nextQuestion.dialog_text;
         _questionText = nextQuestion.question;
         _infoText = nextQuestion.info;
       }
+
       let isFinish = _answers.length == this.state.qLength;
+      console.log(_answers.length);
       this.setState({
         answers: _answers,
         yourPoint: Number(myPoint.toFixed(0)),
@@ -176,7 +183,7 @@ export default class GameScreen extends Component {
       console.log('yourPoint', this.state.yourPoint);
     };
     var currentPercent = (this.state.yourPoint * 100) / this.state.maxPoint;
-    //console.log(currentPercent)
+    console.log(currentPercent)
     const onShowExtendInfo = (info) => {
       //todo show extend info
 
@@ -205,9 +212,10 @@ export default class GameScreen extends Component {
                 {this.state.gameSession != null ? (
                   this.state.gameSession.map((item, index) => {
                     var length = this.state.gameSession.length;
+                    console.log(length);
                     var nextQuestion =
                       index + 1 <= length - 1
-                        ? this.state.gameSession[index + 1].question
+                        ? this.state.gameSession[index + 1]
                         : null;
                     return (
                       <TinderCard

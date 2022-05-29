@@ -31,7 +31,7 @@ export default class GameScreen extends Component {
 
     const response = await fetch("http://103.110.86.45:6868/api/questions");
     const dataResponse = await response.json();
-    const data = dataResponse.data;
+    const data1 = dataResponse.data;
 
     /*    code:
        - input: array
@@ -40,11 +40,18 @@ export default class GameScreen extends Component {
        - input: array bi trung(ban dau)
        - input: array khong bi trung (sau khi random) */
 
-    /*   const data = data1.reduce(function (r, a) {
-        r[a.characters_id] = r[a.characters_id] || [];
-        r[a.characters_id].push(a);
-        return r;
-      }, Object.create(null));*/
+    const group = data1.reduce(function (r, a) {
+      r[a.characters_id] = r[a.characters_id] || [];
+      r[a.characters_id].push(a);
+      return r;
+    }, Object.create(null));
+    const data = [];
+    for (const character_id in group) {
+      random_index_in_a_group =
+        Math.floor(Math.random() * group.ford.length);
+      a_random_item = group[character_id][random_index_in_a_group];
+      data.push(a_random_item);
+    }
     console.log(data);
 
     if (data != null) {

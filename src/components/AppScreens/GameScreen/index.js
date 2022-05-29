@@ -99,7 +99,7 @@ export default class GameScreen extends Component {
       if (name != null && name != "") {
         var data = {
           user_name: name,
-          total_score: this.state.answers,
+          total_score: this.state.yourPoint,
         };
         await fetch("http://103.110.86.45:6868/api/scores", {
           method: "POST",

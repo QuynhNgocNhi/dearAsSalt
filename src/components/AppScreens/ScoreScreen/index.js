@@ -22,8 +22,8 @@ export default class ScoreScreen extends Component {
           {data.map(item =>
             <tr key={item.id}>
               <td>{item.rank}</td>
-              <td>{item.user_name}</td>
-              <td>{Number(item.total_score.toFixed(1))}</td>
+              <td style={{ paddingLeft: 10 }}>{item.user_name}</td>
+              <td style={{ paddingLeft: 150 }}>{Number(item.total_score.toFixed(1))}</td>
             </tr>
           )}
         </tbody>

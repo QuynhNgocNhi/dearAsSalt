@@ -5,6 +5,7 @@ import shopbtn from 'contents/images/buttons/shopbtn.png';
 import sharebtn from 'contents/images/buttons/sharebtn.png';
 import replaybtn from 'contents/images/buttons/replaybtn.png';
 import LoadingScreen from 'components/AppScreens/LoadingScreen';
+import axios from 'axios';
 export default class ScoreScreen extends Component {
   constructor(props) {
     super(props);
@@ -79,11 +80,19 @@ export default class ScoreScreen extends Component {
 
   async fetchData() {
     try {
-      const response = await fetch('http://103.110.86.45:6868/api/scores'); // gọi api lên controller để lấy data
+
+      /* const response = await fetch('http://103.110.86.45:6868/api/scores'); // gọi api lên controller để lấy data
       const dataResponse = await response.json();
-      let data = dataResponse.data;
-      console.log(data);
-      this.setState({ items: data, loading: false });
+      let data = dataResponse.data; */
+      axios.get(`http://103.110.86.45:6868/api/scores`)
+        .then(res => {
+          const get = res.data;
+          let data = get.data;
+
+          console.log(data);
+          this.setState({ items: data, loading: false });
+        })
+        .catch(error => console.log(error));
     }
     catch (e) {
       console.log(e);

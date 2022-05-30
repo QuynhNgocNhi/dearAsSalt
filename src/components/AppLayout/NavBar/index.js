@@ -6,7 +6,7 @@ export default class NavBar extends Component {
         return (
             <div className="sas__navbar">
                 <div className="navbar__logo">
-                    <NavLink activeClassName="active" className="nav-link" to="/">
+                    <NavLink activeClassName="active" className="nav-link" to="/dearAsSalt">
                         <img src={logoimg} className="navbar__logoimg" />
                     </NavLink>
                 </div>

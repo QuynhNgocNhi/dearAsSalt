@@ -4,6 +4,7 @@ import LoadingScreen from "components/AppScreens/LoadingScreen";
 import jokerimg from "contents/images/game/joker.png";
 import jokerimgUp from "contents/images/game/joker-up.png";
 import { Progress } from "react-sweet-progress";
+import axios from 'axios';
 
 import "react-sweet-progress/lib/style.css";
 export default class GameScreen extends Component {
@@ -27,65 +28,72 @@ export default class GameScreen extends Component {
       submitting: false,
     };
   }
+
   async componentDidMount() {
+    axios.get(`http://103.110.86.45:6868/api/questions`)
+      .then(res => {
+        const get = res.data;
+        let data1 = get.data;
+        /* const response = await fetch("http://103.110.86.45:6868/api/questions");
+        const dataResponse = await response.json();
+        let data1 = dataResponse.data; */
+        console.log(data1);
+        /*    code:
+           - input: array
+           - output: hien thi
+           
+           - input: array bi trung(ban dau)
+           - input: array khong bi trung (sau khi random) */
 
-    const response = await fetch("http://103.110.86.45:6868/api/questions");
-    const dataResponse = await response.json();
-    let data1 = dataResponse.data;
-    console.log(data1);
-    /*    code:
-       - input: array
-       - output: hien thi
-       
-       - input: array bi trung(ban dau)
-       - input: array khong bi trung (sau khi random) */
+        let group = data1.reduce(function (r, a) {
+          r[a.characters_id] = r[a.characters_id] || [];
+          r[a.characters_id].push(a);
+          return r;
+        }, Object.create(null));
+        let data = [];
+        for (let character_id in group) {
+          let random_index_in_a_group =
+            Math.floor(Math.random() * group[character_id].length);
+          let a_random_item = group[character_id][random_index_in_a_group];
+          data.push(a_random_item);
+        }
+        console.log(data);
 
-    let group = data1.reduce(function (r, a) {
-      r[a.characters_id] = r[a.characters_id] || [];
-      r[a.characters_id].push(a);
-      return r;
-    }, Object.create(null));
-    let data = [];
-    for (let character_id in group) {
-      let random_index_in_a_group =
-        Math.floor(Math.random() * group[character_id].length);
-      let a_random_item = group[character_id][random_index_in_a_group];
-      data.push(a_random_item);
-    }
-    console.log(data);
-
-    if (data != null) {
-      var length = data.length;
-      console.log(length);
-      let hi = 0;
-      for (let index in data) {
-        let yes = data[index].yes_score;
-        hi += yes;
-      }
+        if (data != null) {
+          var length = data.length;
+          console.log(length);
+          let hi = 0;
+          for (let index in data) {
+            let yes = data[index].yes_score;
+            hi += yes;
+          }
 
 
-      var nextQuestion = length > 0 ? data[0] : null;
-      let _dialogText = "";
-      let _questionText = "";
-      let _infoText = "";
-      if (nextQuestion != null) {
-        _dialogText = nextQuestion.dialog_text;
-        _questionText = nextQuestion.question;
-        _infoText = nextQuestion.info;
-      }
-      //console.log(data);
-      this.setState({
-        maxPoint: hi,
-        qLength: length,
-        gameSession: data,
-        answers: null,
-        yourPoint: 0,
-        dialogText: _dialogText,
-        questionText: _questionText,
-        infoText: _infoText,
-        isLoading: false,
-      });
-    }
+          var nextQuestion = length > 0 ? data[0] : null;
+          let _dialogText = "";
+          let _questionText = "";
+          let _infoText = "";
+          if (nextQuestion != null) {
+            _dialogText = nextQuestion.dialog_text;
+            _questionText = nextQuestion.question;
+            _infoText = nextQuestion.info;
+          }
+          //console.log(data);
+          this.setState({
+            maxPoint: hi,
+            qLength: length,
+            gameSession: data,
+            answers: null,
+            yourPoint: 0,
+            dialogText: _dialogText,
+            questionText: _questionText,
+            infoText: _infoText,
+            isLoading: false,
+          });
+        }
+
+      })
+      .catch(error => console.log(error));
   }
   onShowHelpText = () => {
     this.setState({
@@ -97,15 +105,27 @@ export default class GameScreen extends Component {
       this.setState({ isLoading: true, submitting: true });
       var name = this.state.userName;
       if (name != null && name != "") {
-        var data = {
+        /*  var data = {
+           user_name: name,
+           total_score: this.state.yourPoint,
+         }; */
+        let data = JSON.stringify({
           user_name: name,
           total_score: this.state.yourPoint,
-        };
-        await fetch("http://103.110.86.45:6868/api/scores", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
         });
+        const response = await axios.post("http://103.110.86.45:6868/api/scores", data, { headers: { "Content-Type": "application/json" } });
+        console.log(response.data);
+        /*  await axios.post(`http://103.110.86.45:6868/api/scores`, { data })
+           .then(res => {
+             console.log(res);
+             console.log(res.data);
+           }).catch(error => console.log(error)); */
+
+        /*  await fetch("http://103.110.86.45:6868/api/scores", {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify(data),
+         }); */
       }
       this.setState({ isLoading: false, submitting: false });
       this.props.history.push("/score");
@@ -133,6 +153,7 @@ export default class GameScreen extends Component {
     };
     const onAnswer = (selection, question, nextQuestion) => {
       var _answers = this.state.answers != null ? this.state.answers : [];
+      console.log("hi", question.id);
       var existIndex = _answers.findIndex((f) => f.questionId === question.id);
       if (false) {
         _answers[existIndex].selection = selection;
@@ -144,11 +165,15 @@ export default class GameScreen extends Component {
       }
       var myPoint = 0;
       var questions = this.state.gameSession;
-      console.log("questions", questions)
+      console.log("questions", this.state.gameSession)
+
       _answers.map((answer, index) => {
+
         var index = questions.findIndex(
-          (f) => f.question.id === answer.questionId
+
+          (f) => f.id === answer.questionId
         );
+        console.log("index", index)
         if (index >= 0) {
           var qInfo = questions[index];
 
@@ -248,8 +273,8 @@ export default class GameScreen extends Component {
                       default:
                       // code block
                     }
-                    console.log(item);
-                    console.log(charactersUrl);
+                    /* console.log(item);
+                    console.log(charactersUrl); */
                     var _src = require(`contents/images/characters/${charactersUrl}`);
                     var length = this.state.gameSession.length;
                     console.log(length);
@@ -261,7 +286,7 @@ export default class GameScreen extends Component {
                       <TinderCard
                         key={index}
                         onSwipe={(direction) =>
-                          onSwipe(direction, item.question, nextQuestion)
+                          onSwipe(direction, item, nextQuestion)
                         }
                         preventSwipe={["up", "down"]}
                         className="sas__gameitem"

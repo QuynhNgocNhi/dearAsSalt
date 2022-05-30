@@ -211,6 +211,46 @@ export default class GameScreen extends Component {
               <div className="sas__gamewrapper">
                 {this.state.gameSession != null ? (
                   this.state.gameSession.map((item, index) => {
+                    let charactersUrl = '';
+                    console.log(item.characters.name);
+                    // var _src = require(`contents/images/characters/${item.name}`);
+                    switch (item.characters.name) {
+                      case "Knight":
+                        charactersUrl = "knight.png";
+                        break;
+                      case "Calvino the cook":
+                        charactersUrl = "the-cook.png";
+                        break;
+                      case "Trusted servant":
+                        charactersUrl = "servant.png";
+                        break;
+                      case "Prince":
+                        charactersUrl = "prince.png";
+                        break;
+                      case "Princess Zizola":
+                        charactersUrl = "princess.png";
+                        break;
+                      case "Alchemist":
+                        charactersUrl = "achemist.png";
+                        break;
+                      case "Queen":
+                        charactersUrl = "queen.png";
+                        break;
+                      case "Prisoner":
+                        charactersUrl = "prisoner.png";
+                        break;
+                      case "Merchant":
+                        charactersUrl = "merchant.png";
+                        break;
+                      case "Farmer":
+                        charactersUrl = "farmer.png";
+                        break;
+                      default:
+                      // code block
+                    }
+                    console.log(item);
+                    console.log(charactersUrl);
+                    var _src = require(`contents/images/characters/${charactersUrl}`);
                     var length = this.state.gameSession.length;
                     console.log(length);
                     var nextQuestion =
@@ -228,7 +268,7 @@ export default class GameScreen extends Component {
                       //style={{height: window.innerWidth <= 767 ? `${window.innerHeight}px` : '100vh'}}
                       >
 
-
+                        <img src={_src} />
                         <div className="gameitem__dialog">
                           {this.state.dialogText}
                         </div>

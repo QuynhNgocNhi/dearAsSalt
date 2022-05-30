@@ -16,11 +16,11 @@ const appRoutes = [
   //  path: '/oii-studio/about',
   //  component: AboutPorfolio
   //},
-   {
-     exact: true,
-     path: '/',
-     component: HomeScreen
-   }, 
+  {
+    exact: true,
+    path: '/dearAsSalt',
+    component: HomeScreen
+  },
   //{
   //  exact: true,
   //  path: '/sweet-as-salt/home',

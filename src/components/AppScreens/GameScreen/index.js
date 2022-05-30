@@ -113,7 +113,11 @@ export default class GameScreen extends Component {
           user_name: name,
           total_score: this.state.yourPoint,
         });
-        const response = await axios.post("http://103.110.86.45:6868/api/scores", data, { headers: { "Content-Type": "application/json" } });
+        const response = await axios.post("http://103.110.86.45:6868/api/scores", data, {
+          headers: {
+            "Content-Type": "application/json", "Content-Security-Policy": "upgrade-insecure-requests"
+          }
+        });
         console.log(response.data);
         /*  await axios.post(`http://103.110.86.45:6868/api/scores`, { data })
            .then(res => {

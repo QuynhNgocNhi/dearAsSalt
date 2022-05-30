@@ -84,7 +84,12 @@ export default class ScoreScreen extends Component {
       /* const response = await fetch('http://103.110.86.45:6868/api/scores'); // gọi api lên controller để lấy data
       const dataResponse = await response.json();
       let data = dataResponse.data; */
-      axios.get(`http://103.110.86.45:6868/api/scores`)
+      axios.get(`http://103.110.86.45:6868/api/scores`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Security-Policy": "upgrade-insecure-requests"
+        }
+      })
         .then(res => {
           const get = res.data;
           let data = get.data;

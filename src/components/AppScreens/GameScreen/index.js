@@ -30,7 +30,12 @@ export default class GameScreen extends Component {
   }
 
   async componentDidMount() {
-    axios.get(`http://103.110.86.45:6868/api/questions`)
+    axios.get(`https://misao.one/api/questions`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Security-Policy": "upgrade-insecure-requests"
+      }
+    })
       .then(res => {
         const get = res.data;
         let data1 = get.data;
@@ -113,7 +118,7 @@ export default class GameScreen extends Component {
           user_name: name,
           total_score: this.state.yourPoint,
         });
-        const response = await axios.post("http://103.110.86.45:6868/api/scores", data, {
+        const response = await axios.post("https://misao.one/api/scores", data, {
           headers: {
             "Content-Type": "application/json", "Content-Security-Policy": "upgrade-insecure-requests"
           }
